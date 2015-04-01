@@ -29,7 +29,7 @@ public:
 
 	bool CollisionCheck(Entity* entity)
 	{
-		return getGlobalBounds().intersects(entity->getGlobalBounds);
+		return getGlobalBounds().intersects(entity->getGlobalBounds());
 	}
 
 private:

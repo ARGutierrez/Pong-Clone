@@ -18,7 +18,9 @@ int main()
 		}
 
 		window.clear(sf::Color::Black);
-
+		shape.setPosition(window.getSize().x / 2 - shape.getGlobalBounds().width / 2, window.getSize().y / 2 - shape.getGlobalBounds().height / 2);
+		window.draw(shape);
+		window.display();
 		// Update and Render go here
 
 		if (quitGame)
