@@ -1,8 +1,10 @@
 #include <SFML/Graphics.hpp>
 
+bool quitGame = false;
+
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(800, 600), "Pong RPG");
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
 
@@ -15,9 +17,14 @@ int main()
 				window.close();
 		}
 
-		window.clear();
-		window.draw(shape);
-		window.display();
+		window.clear(sf::Color::Black);
+
+		// Update and Render go here
+
+		if (quitGame)
+		{
+			window.close();
+		}
 	}
 
 	return 0;
