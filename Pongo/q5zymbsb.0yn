@@ -1,16 +1,12 @@
 #include <SFML/Graphics.hpp>
 #include <time.h>
-#include <math.h>
 
 bool quitGame = false;
 
 sf::Vector2f paddleVelocity(0.0f, 2.0f);
 sf::Vector2f ballVelocity(0.0f, 0.0f);
 
-float ballSpeed = 2.5f;
-
-int score1 = 0;
-int score2 = 0;
+float ballSpeed = 2.0f;
 
 void ResetBall(sf::RenderWindow& window, sf::RectangleShape& ball);
 void HitPaddle(sf::RectangleShape& paddle, sf::RectangleShape& ball, int playerIndex);
@@ -94,26 +90,6 @@ int main()
 		HitPaddle(paddle1, shape, -1);
 		HitPaddle(paddle2, shape,  1);
 
-		// Scoring
-		if (shape.getPosition().x < 0.0f)
-		{
-			// Player 2 scores
-			shape.setPosition(sf::Vector2f(window.getSize().x / 2 - shape.getGlobalBounds().width, window.getSize().y / 2 - shape.getGlobalBounds().height));
-			ballVelocity.x = 0.0f;
-			ballVelocity.y = 0.0f;
-			ballSpeed = 2.5f;
-			score2++;
-		}
-		if (shape.getPosition().x > window.getSize().x)
-		{
-			// Player 1 scores
-			shape.setPosition(sf::Vector2f(window.getSize().x / 2 - shape.getGlobalBounds().width, window.getSize().y / 2 - shape.getGlobalBounds().height));
-			ballVelocity.x = 0.0f;
-			ballVelocity.y = 0.0f;
-			ballSpeed = 2.5f;
-			score1++;
-		}
-
 		shape.move(ballVelocity);
 
 		// Render the ball and paddles
@@ -148,21 +124,5 @@ void HitPaddle(sf::RectangleShape& paddle, sf::RectangleShape& ball, int playerI
 	{
 		float hitPoint = paddle.getPosition().y + (paddle.getGlobalBounds().height / 2) - ball.getPosition().y;
 		float normalizedHitPoint = (hitPoint / (paddle.getGlobalBounds().height / 2));
-		float angle = normalizedHitPoint * (5.0f * 3.14f) / 12.0f;
-
-		ballVelocity.x = ballSpeed * cos(angle);
-		ballVelocity.y = ballSpeed * sin(angle);
-
-		ballSpeed += 0.15f;
-
-		if (playerIndex == -1)
-		{
-			ballVelocity.y *= -1.0f;
-		}
-
-		if (playerIndex == 1)
-		{
-			ballVelocity *= -1.0f;
-		}
 	}
 }

@@ -9,9 +9,6 @@ sf::Vector2f ballVelocity(0.0f, 0.0f);
 
 float ballSpeed = 2.5f;
 
-int score1 = 0;
-int score2 = 0;
-
 void ResetBall(sf::RenderWindow& window, sf::RectangleShape& ball);
 void HitPaddle(sf::RectangleShape& paddle, sf::RectangleShape& ball, int playerIndex);
 
@@ -102,16 +99,6 @@ int main()
 			ballVelocity.x = 0.0f;
 			ballVelocity.y = 0.0f;
 			ballSpeed = 2.5f;
-			score2++;
-		}
-		if (shape.getPosition().x > window.getSize().x)
-		{
-			// Player 1 scores
-			shape.setPosition(sf::Vector2f(window.getSize().x / 2 - shape.getGlobalBounds().width, window.getSize().y / 2 - shape.getGlobalBounds().height));
-			ballVelocity.x = 0.0f;
-			ballVelocity.y = 0.0f;
-			ballSpeed = 2.5f;
-			score1++;
 		}
 
 		shape.move(ballVelocity);
@@ -153,12 +140,7 @@ void HitPaddle(sf::RectangleShape& paddle, sf::RectangleShape& ball, int playerI
 		ballVelocity.x = ballSpeed * cos(angle);
 		ballVelocity.y = ballSpeed * sin(angle);
 
-		ballSpeed += 0.15f;
-
-		if (playerIndex == -1)
-		{
-			ballVelocity.y *= -1.0f;
-		}
+		ballSpeed += 0.5f;
 
 		if (playerIndex == 1)
 		{
