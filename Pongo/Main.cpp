@@ -4,10 +4,11 @@
 
 bool quitGame = false;
 
-sf::Vector2f paddleVelocity(0.0f, 2.0f);
+sf::Vector2f paddleVelocity(0.0f, 5.0f);
 sf::Vector2f ballVelocity(0.0f, 0.0f);
 
-float ballSpeed = 2.5f;
+float initialBallSpeed = 3.0f;
+float ballSpeed = 3.0f;
 
 int score1 = 0;
 int score2 = 0;
@@ -90,7 +91,7 @@ int main()
 			ballVelocity.y *= -1.0f;
 		}
 
-		// Paddle colissions
+		// Paddle collisions with ball
 		HitPaddle(paddle1, shape, -1);
 		HitPaddle(paddle2, shape,  1);
 
@@ -101,7 +102,7 @@ int main()
 			shape.setPosition(sf::Vector2f(window.getSize().x / 2 - shape.getGlobalBounds().width, window.getSize().y / 2 - shape.getGlobalBounds().height));
 			ballVelocity.x = 0.0f;
 			ballVelocity.y = 0.0f;
-			ballSpeed = 2.5f;
+			ballSpeed = initialBallSpeed;
 			score2++;
 		}
 		if (shape.getPosition().x > window.getSize().x)
@@ -110,7 +111,7 @@ int main()
 			shape.setPosition(sf::Vector2f(window.getSize().x / 2 - shape.getGlobalBounds().width, window.getSize().y / 2 - shape.getGlobalBounds().height));
 			ballVelocity.x = 0.0f;
 			ballVelocity.y = 0.0f;
-			ballSpeed = 2.5f;
+			ballSpeed = initialBallSpeed;
 			score1++;
 		}
 
@@ -148,6 +149,7 @@ void HitPaddle(sf::RectangleShape& paddle, sf::RectangleShape& ball, int playerI
 	{
 		float hitPoint = paddle.getPosition().y + (paddle.getGlobalBounds().height / 2) - ball.getPosition().y;
 		float normalizedHitPoint = (hitPoint / (paddle.getGlobalBounds().height / 2));
+		// 5pi / 12
 		float angle = normalizedHitPoint * (5.0f * 3.14f) / 12.0f;
 
 		ballVelocity.x = ballSpeed * cos(angle);
@@ -157,12 +159,12 @@ void HitPaddle(sf::RectangleShape& paddle, sf::RectangleShape& ball, int playerI
 
 		if (playerIndex == -1)
 		{
-			ballVelocity.y *= -1.0f;
+			ballVelocity.y *= -1.5f;
 		}
 
 		if (playerIndex == 1)
 		{
-			ballVelocity *= -1.0f;
+			ballVelocity *= -1.5f;
 		}
 	}
 }
