@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <time.h>
 #include <math.h>
+#include <iostream>
 
 bool quitGame = false;
 
@@ -147,24 +148,17 @@ void HitPaddle(sf::RectangleShape& paddle, sf::RectangleShape& ball, int playerI
 {
 	if (paddle.getGlobalBounds().intersects(ball.getGlobalBounds()))
 	{
+		// Calculate collision in paddle's local space
 		float hitPoint = paddle.getPosition().y + (paddle.getGlobalBounds().height / 2) - ball.getPosition().y;
 		float normalizedHitPoint = (hitPoint / (paddle.getGlobalBounds().height / 2));
 		// 5pi / 12
 		float angle = normalizedHitPoint * (5.0f * 3.14f) / 12.0f;
 
-		ballVelocity.x = ballSpeed * cos(angle);
-		ballVelocity.y = ballSpeed * sin(angle);
+		ballVelocity.x = ballSpeed * cos(angle) * playerIndex;
+		ballVelocity.y = -ballSpeed * sin(angle);
 
 		ballSpeed += 0.15f;
-
-		if (playerIndex == -1)
-		{
-			ballVelocity.y *= -1.5f;
-		}
-
-		if (playerIndex == 1)
-		{
-			ballVelocity *= -1.5f;
-		}
+		ballVelocity.x *= -1.5f;
+		std::cout << ballVelocity.x << std::endl;
 	}
 }
