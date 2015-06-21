@@ -3,10 +3,11 @@
 #include <math.h>
 #include <iostream>
 
+#include "Ball.h"
+
 bool quitGame = false;
 
 sf::Vector2f paddleVelocity(0.0f, 5.0f);
-sf::Vector2f ballVelocity(0.0f, 0.0f);
 
 float initialBallSpeed = 3.0f;
 float ballSpeed = 3.0f;
@@ -26,9 +27,7 @@ int main()
 	window.setVerticalSyncEnabled(true);
 
 	// Init ball
-	sf::RectangleShape shape(sf::Vector2f(10.0f, 10.0f));
-	shape.setFillColor(sf::Color::White);
-	shape.setPosition(window.getSize().x / 2 - shape.getGlobalBounds().width, window.getSize().y / 2 - shape.getGlobalBounds().height);
+	Ball ball(window);
 
 	// Init paddles
 	sf::RectangleShape paddle1(sf::Vector2f(20.0f, 100.0f));
@@ -57,10 +56,12 @@ int main()
 		// Start game
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
-			ResetBall(window, shape);
+			ball.Reset();
 		}
 
 		// Update the ball and paddles
+
+		ball.Update();
 		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
@@ -82,44 +83,17 @@ int main()
 
 		// Ball movement and collisions
 
-		// Floor and Ceiling collisions
-		if (shape.getPosition().y <= 0)
-		{
-			ballVelocity.y *= -1.0f;
-		}
-		if (shape.getPosition().y + shape.getGlobalBounds().height >= window.getSize().y)
-		{
-			ballVelocity.y *= -1.0f;
-		}
+		
 
 		// Paddle collisions with ball
-		HitPaddle(paddle1, shape, -1);
-		HitPaddle(paddle2, shape,  1);
+		/*HitPaddle(paddle1, shape, -1);
+		HitPaddle(paddle2, shape,  1);*/
 
-		// Scoring
-		if (shape.getPosition().x < 0.0f)
-		{
-			// Player 2 scores
-			shape.setPosition(sf::Vector2f(window.getSize().x / 2 - shape.getGlobalBounds().width, window.getSize().y / 2 - shape.getGlobalBounds().height));
-			ballVelocity.x = 0.0f;
-			ballVelocity.y = 0.0f;
-			ballSpeed = initialBallSpeed;
-			score2++;
-		}
-		if (shape.getPosition().x > window.getSize().x)
-		{
-			// Player 1 scores
-			shape.setPosition(sf::Vector2f(window.getSize().x / 2 - shape.getGlobalBounds().width, window.getSize().y / 2 - shape.getGlobalBounds().height));
-			ballVelocity.x = 0.0f;
-			ballVelocity.y = 0.0f;
-			ballSpeed = initialBallSpeed;
-			score1++;
-		}
+		
 
-		shape.move(ballVelocity);
 
 		// Render the ball and paddles
-		window.draw(shape);
+		
 		window.draw(paddle1);
 		window.draw(paddle2);
 
@@ -136,29 +110,28 @@ int main()
 	return 0;
 }
 
-void ResetBall(sf::RenderWindow& window, sf::RectangleShape& ball)
-{
-	ball.setPosition(window.getSize().x / 2 - ball.getGlobalBounds().width / 2, window.getSize().y / 2 - ball.getGlobalBounds().height / 2);
-	ballVelocity.x = ballSpeed;
-	ballVelocity.y = ((rand() % 2) == 0) ? ballSpeed : -ballSpeed;
-}
+//void ResetBall(sf::RenderWindow& window, sf::RectangleShape& ball)
+//{
+//	ball.setPosition(window.getSize().x / 2 - ball.getGlobalBounds().width / 2, window.getSize().y / 2 - ball.getGlobalBounds().height / 2);
+//	ballVelocity.x = ballSpeed;
+//	ballVelocity.y = ((rand() % 2) == 0) ? ballSpeed : -ballSpeed;
+//}
 
 // player index: -1 for left, 1 for right
-void HitPaddle(sf::RectangleShape& paddle, sf::RectangleShape& ball, int playerIndex)
-{
-	if (paddle.getGlobalBounds().intersects(ball.getGlobalBounds()))
-	{
-		// Calculate collision in paddle's local space
-		float hitPoint = paddle.getPosition().y + (paddle.getGlobalBounds().height / 2) - ball.getPosition().y;
-		float normalizedHitPoint = (hitPoint / (paddle.getGlobalBounds().height / 2));
-		// 5pi / 12
-		float angle = normalizedHitPoint * (5.0f * 3.14f) / 12.0f;
-
-		ballVelocity.x = ballSpeed * cos(angle) * playerIndex;
-		ballVelocity.y = -ballSpeed * sin(angle);
-
-		ballSpeed += 0.15f;
-		ballVelocity.x *= -1.5f;
-		std::cout << ballVelocity.x << std::endl;
-	}
-}
+//void HitPaddle(sf::RectangleShape& paddle, sf::RectangleShape& ball, int playerIndex)
+//{
+//	if (paddle.getGlobalBounds().intersects(ball.getGlobalBounds()))
+//	{
+//		// Calculate collision in paddle's local space
+//		float hitPoint = paddle.getPosition().y + (paddle.getGlobalBounds().height / 2) - ball.getPosition().y;
+//		float normalizedHitPoint = (hitPoint / (paddle.getGlobalBounds().height / 2));
+//		// 5pi / 12
+//		float angle = normalizedHitPoint * (5.0f * 3.14f) / 12.0f;
+//
+//		ballVelocity.x = ballSpeed * cos(angle) * playerIndex;
+//		ballVelocity.y = -ballSpeed * sin(angle);
+//
+//		ballSpeed += 0.15f;
+//		ballVelocity.x *= -1.5f;
+//	}
+//}
