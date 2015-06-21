@@ -8,6 +8,7 @@ public:
 
 	void Init();
 	void Update();
+	void Render();
 	void Reset();
 	void Destroy();
 

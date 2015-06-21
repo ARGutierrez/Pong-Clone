@@ -27,7 +27,6 @@ void Ball::Init()
 void Ball::Update()
 {
 	m_ball->move(m_velocity);
-	m_window->draw(*m_ball);
 
 	// Start game
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
@@ -58,6 +57,11 @@ void Ball::Update()
 		// score1++;
 		Reset();
 	}
+}
+
+void Ball::Render()
+{
+	m_window->draw(*m_ball);
 }
 
 void Ball::StartGame()

@@ -35,8 +35,6 @@ void Paddle::Init()
 
 void Paddle::Update()
 {
-	m_window->draw(*m_paddle);	
-
 	if (m_playerIndex == -1)
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
@@ -74,6 +72,11 @@ void Paddle::Update()
 		m_ball->SetVelocity(newBallVelocity);
 		m_ball->Hit();
 	}
+}
+
+void Paddle::Render()
+{
+	m_window->draw(*m_paddle);
 }
 
 
