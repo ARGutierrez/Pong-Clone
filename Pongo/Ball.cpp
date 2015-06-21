@@ -13,12 +13,14 @@ Ball::~Ball()
 
 void Ball::Init()
 {
-	m_speed = 0.0f;
+	srand(time(NULL));
+
+	m_speed = k_initialSpeed;
 	m_velocity = sf::Vector2f(0.0f, 0.0f);
 
-	m_ball = new sf::RectangleShape();
+	m_ball = new sf::CircleShape();
 	m_ball->setFillColor(sf::Color::White);
-	m_ball->setSize(sf::Vector2f(10.f, 10.f));
+	m_ball->setRadius(5.0f);
 	m_ball->setPosition(m_window->getSize().x / 2 - m_ball->getGlobalBounds().width, m_window->getSize().y / 2 - m_ball->getGlobalBounds().height);
 }
 
@@ -26,6 +28,12 @@ void Ball::Update()
 {
 	m_ball->move(m_velocity);
 	m_window->draw(*m_ball);
+
+	// Start game
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		StartGame();
+	}
 
 	// Floor and Ceiling collisions
 	if (m_ball->getPosition().y <= 0)
@@ -52,10 +60,22 @@ void Ball::Update()
 	}
 }
 
+void Ball::StartGame()
+{
+	m_velocity.y = ((rand() % 2) == 0) ? m_speed : -m_speed;
+	m_velocity.x = ((rand() % 2) == 0) ? m_speed : -m_speed;
+}
+
+void Ball::Hit()
+{
+	m_speed += 0.35f;
+}
+
 void Ball::Reset()
 {
 	m_ball->setPosition(m_window->getSize().x / 2 - m_ball->getGlobalBounds().width, m_window->getSize().y / 2 - m_ball->getGlobalBounds().height);
 	m_velocity = sf::Vector2f(0.0f, 0.0f);
+	m_speed = k_initialSpeed;
 }
 
 void Ball::Destroy()
@@ -63,3 +83,18 @@ void Ball::Destroy()
 	m_speed = 0.0f;
 	delete m_ball;
 }
+
+sf::FloatRect Ball::GetGlobalBounds()
+{
+	return m_ball->getGlobalBounds();
+}
+sf::Vector2f Ball::GetPosition()
+{
+	return m_ball->getPosition();
+}
+
+float Ball::GetSpeed()
+{
+	return m_speed;
+}
+
